@@ -25,4 +25,8 @@ public class Local {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         return today.format(dtf);
     }
+
+    public static String getInfo(){
+        return "To jest test gita";
+    }
 }
