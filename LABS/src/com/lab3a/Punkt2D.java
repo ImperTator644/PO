@@ -5,14 +5,14 @@ package com.lab3a;
  * @author Lukasz Kaczynski
  * @version 1.1 01.04.2022
  */
-public class Point {
-    int x;
-    int y;
+public class Punkt2D implements Punkt{
+    private int x;
+    private int y;
 
     /**
      * Inicjacja zmiennych domyslnych
      */
-    public Point(){
+    public Punkt2D(){
         this.x=0;
         this.y=0;
     }
@@ -22,7 +22,7 @@ public class Point {
      * @param x liczba naturalna
      * @param y liczba naturalna
      */
-    public Point(int x, int y){
+    public Punkt2D(int x, int y){
         this.x=x;
         this.y=y;
     }
@@ -61,9 +61,18 @@ public class Point {
 
     /**
      *
+     * @return tablica zmiennych liczbowych przechowujaca koordynaty punktu
+     */
+    public int[] getCoordinates(){
+        int[] cords = {this.x, this.y};
+        return cords;
+    }
+
+    /**
+     *
      * @return Nazwa.klasy(x,y)
      */
     @Override public String toString(){
-        return (this.getClass().getName() + "(" + x + "," + y + ")");
+        return (this.getClass().getName() + " (" + x + "),(" + y + ")");
     }
 }

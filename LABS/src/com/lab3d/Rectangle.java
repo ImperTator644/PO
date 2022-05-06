@@ -1,32 +1,32 @@
 package com.lab3d;
 
-import com.lab3a.Point;
+import com.lab3a.Punkt2D;
 
 public class Rectangle {
-    private Point bottomLeft;
-    private Point topRight;
+    private Punkt2D bottomLeft;
+    private Punkt2D topRight;
 
     public Rectangle(){
-        this.bottomLeft = new Point(0, 0);
-        this.topRight = new Point(1,1);
+        this.bottomLeft = new Punkt2D(0, 0);
+        this.topRight = new Punkt2D(1,1);
     }
 
-    public Rectangle(Point bL, Point tR){
+    public Rectangle(Punkt2D bL, Punkt2D tR){
         this.bottomLeft = bL;
         this.topRight = tR;
     }
 
     public Rectangle(int bottom, int left, int top, int right){
-        this.bottomLeft = new Point(left, bottom);
-        this.topRight = new Point(right, top);
+        this.bottomLeft = new Punkt2D(left, bottom);
+        this.topRight = new Punkt2D(right, top);
     }
 
     //getters and setters
 
-    public Point getBottomLeft(){
+    public Punkt2D getBottomLeft(){
         return this.bottomLeft;
     }
-    public Point getTopRight(){
+    public Punkt2D getTopRight(){
         return this.topRight;
     }
     public int getBottom(){
@@ -41,10 +41,10 @@ public class Rectangle {
     public int getRight(){
         return topRight.getX();
     }
-    public void setBottomLeft(Point bl){
+    public void setBottomLeft(Punkt2D bl){
         this.bottomLeft = bl;
     }
-    public void setTopRight(Point tR){
+    public void setTopRight(Punkt2D tR){
         this.topRight = tR;
     }
     public void setBottom(int bottom){
