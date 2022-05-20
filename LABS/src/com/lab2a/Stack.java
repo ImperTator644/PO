@@ -51,6 +51,7 @@ public class Stack {
      * @return zwraca element ze szczytu stosu
      */
     public String peek(){
+        if(empty()) throw new ArrayIndexOutOfBoundsException("Stos pusty");
         return elements[top];
     }
 
