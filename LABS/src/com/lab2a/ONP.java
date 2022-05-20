@@ -9,6 +9,16 @@ public class ONP {
     private static final Stack stack = new Stack();
 
     /**
+     * Rekurencyjnie oblicza wartosc silnia z x
+     * @param x liczba typu double
+     * @return silnia z x
+     */
+    private static Double factorialOfX(Double x){
+        if(x>1) return x*factorialOfX(x-1.0);
+        return 1.0;
+    }
+
+    /**
      * Zwraca wage podanego elementu char (operatory wedlug kolejnosci wykonywania dzialan {od 1 do 3}, inne znaki maja wage -9
      *
      * @param arg znak, ktorego wage chcemy uzyskac
@@ -17,7 +27,7 @@ public class ONP {
     private static int getWeight(char arg) {
         int weight;
         switch (arg) {
-            case '^', '_', '\'' -> weight = 3;
+            case '^', '_', '\'', '!' -> weight = 3;
             case '*', '/', '%' -> weight = 2;
             case '+', '-' -> weight = 1;
             default -> weight = -9;
@@ -34,7 +44,7 @@ public class ONP {
     private static int getWeight(String arg) {
         int weight;
         switch (arg) {
-            case "^", "_", "'" -> weight = 3;
+            case "^", "_", "'", "!" -> weight = 3;
             case "*", "/", "%" -> weight = 2;
             case "+", "-" -> weight = 1;
             default -> weight = -9;
@@ -52,6 +62,10 @@ public class ONP {
         String answer;
         Double a = Double.parseDouble(stack.peek());
         stack.pop();
+        if(op.equals("!")){
+            answer = Double.toString(factorialOfX(a));
+            return answer;
+        }
         Double b = Double.parseDouble(stack.peek());
         stack.pop();
 
@@ -88,47 +102,48 @@ public class ONP {
         }
         char temp;
         for(int i=0; i<eq.length(); i++){
-            temp=eq.charAt(i);
-            if(Character.isDigit(temp)){
-                converted.append(temp);
-                if(!Character.isDigit(eq.charAt(i+1))) converted.append(" ");
-            }
-            else if (temp == '.'){
-                converted.deleteCharAt(converted.length()-1);
-                converted.append(temp);
-            }
-            else if (temp=='='){
-                while(!stack.empty()){
-                    converted.append(stack.peek());
-                    converted.append(" ");
-                    stack.pop();
-                }
-                converted.append("=");
-            }
-            else if (temp == '(') stack.push(Character.toString(temp));
-            else if (temp == ')'){
-                while(!stack.peek().equals("(")){
-                    converted.append(stack.peek());
-                    converted.append(" ");
-                    stack.pop();
-                }
-                stack.pop();
-            }
-            else if (getWeight(temp) < 0) return "Error";
-            else {
-                if (stack.empty()) stack.push(Character.toString(temp));
-                else if (getWeight(temp) > getWeight(stack.peek())){
-                    stack.push(Character.toString(temp));
-                }
-                else {
-                    while (getWeight(temp) <= getWeight(stack.peek())){
+            try {
+                temp = eq.charAt(i);
+                if (Character.isDigit(temp)) {
+                    converted.append(temp);
+                    if (!Character.isDigit(eq.charAt(i + 1))) converted.append(" ");
+                } else if (temp == '.') {
+                    converted.deleteCharAt(converted.length() - 1);
+                    converted.append(temp);
+                } else if (temp == '=') {
+                    while (!stack.empty()) {
                         converted.append(stack.peek());
                         converted.append(" ");
                         stack.pop();
-                        if(stack.empty()) break;
                     }
-                    stack.push(Character.toString(temp));
+                    converted.append("=");
+                } else if (temp == '(') stack.push(Character.toString(temp));
+                else if (temp == ')') {
+                    while (!stack.peek().equals("(")) {
+                        converted.append(stack.peek());
+                        converted.append(" ");
+                        stack.pop();
+                    }
+                    stack.pop();
+                } else if (getWeight(temp) < 0) return "Error";
+                else {
+                    if (stack.empty()) stack.push(Character.toString(temp));
+                    else if (getWeight(temp) > getWeight(stack.peek())) {
+                        stack.push(Character.toString(temp));
+                    } else {
+                        while (getWeight(temp) <= getWeight(stack.peek())) {
+                            converted.append(stack.peek());
+                            converted.append(" ");
+                            stack.pop();
+                            if (stack.empty()) break;
+                        }
+                        stack.push(Character.toString(temp));
+                    }
                 }
+            }
+            catch(ArrayIndexOutOfBoundsException aioobe){
+                System.out.println(aioobe.getMessage());
+                return "Error";
             }
         }
         return converted.toString();
@@ -142,7 +157,7 @@ public class ONP {
     public static double getAnswer(String s){
         if(s.equalsIgnoreCase("Error")){
             System.out.println("Error");
-            return -99999999;
+            return Double.NEGATIVE_INFINITY;
         }
         stack.clear();
         String[] eq = s.split(" ");
@@ -152,7 +167,7 @@ public class ONP {
                 stack.push(calculate(i));
                 if(stack.peek().equals("Error")){
                     System.out.println("Error");
-                    return -99999999;
+                    return Double.NEGATIVE_INFINITY;
                 }
             }
             else{
